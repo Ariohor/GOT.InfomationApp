@@ -1,19 +1,11 @@
 ﻿using GOT.Services;
 using GOT.Models;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using GOT.DataAccess;
 
 namespace GOT.InformationApp
 {
@@ -29,8 +21,15 @@ namespace GOT.InformationApp
             var dataHandler = new DataHandler();
             var result = dataHandler.GetCharacters();
 
-            caracterListBox.ItemsSource = result;
+            if (result == null)
+            {
+                using(var context =new GOTContext())
+                {
+                    result = context.Characters.ToList();
+                }
+            }
 
+            caracterListBox.ItemsSource = result;
         }
 
         private void SearchTextBoxKeyDown(object sender, KeyEventArgs e)

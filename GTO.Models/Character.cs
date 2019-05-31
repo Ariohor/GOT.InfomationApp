@@ -1,9 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
 
 namespace GOT.Models
 {
@@ -11,8 +8,6 @@ namespace GOT.Models
     {
         [JsonProperty("_id")]
         public string Id { get; set; }
-        [JsonProperty("titles")]
-        public string[] Titles { get; set; }
         [JsonProperty("name")]
         public string Name { get; set; }
         [JsonProperty("slug")]
@@ -21,6 +16,22 @@ namespace GOT.Models
         public string Gender { get; set; }
         [JsonProperty("house")]
         public string House { get; set; }
+        public DateTime DateLastUpdate { get; set; }
+
+        private string[] _titles { get; set; }
+        [JsonProperty("titles")]
+        public string[] Titles
+        {
+            get { return _titles; }
+            set { _titles = value; }
+        }
+
+        [Required]
+        public string TitlesAsString
+        {
+            get { return String.Join("@", _titles); }
+            set { _titles = value.Split('@'); }
+        }
 
         public override string ToString()
         {
